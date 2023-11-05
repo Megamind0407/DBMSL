@@ -1,0 +1,104 @@
+9) For the given relation schema: employee(employee-name, street, city) 
+works (employee-name, company-name, salary) 
+company (company-name, city) 
+manages (employee-name, manager-name)
+ Give an expression in SQL for each of the following queries: 
+a)	Find the name of the company that has the smallest payroll.
+b)	Find the names of all employees in the database who live in the same cities and on the same streets as do their managers.
+
+
+
+
+
+Certainly! Let's first create the tables and then add some sample values. After that, we'll provide the SQL expressions for the queries.
+
+**Creating Tables:**
+
+```sql
+-- Create employee table
+CREATE TABLE employee (
+    employee_name VARCHAR(50),
+    street VARCHAR(100),
+    city VARCHAR(50)
+);
+
+-- Create works table
+CREATE TABLE works (
+    employee_name VARCHAR(50),
+    company_name VARCHAR(50),
+    salary DECIMAL(10, 2)
+);
+
+-- Create company table
+CREATE TABLE company (
+    company_name VARCHAR(50),
+    city VARCHAR(50)
+);
+
+-- Create manages table
+CREATE TABLE manages (
+    employee_name VARCHAR(50),
+    manager_name VARCHAR(50)
+);
+```
+
+**Adding Sample Values:**
+
+```sql
+-- Insert sample data into employee table
+INSERT INTO employee (employee_name, street, city)
+VALUES 
+    ('John Doe', '123 Main Street', 'New York'),
+    ('Jane Smith', '456 Elm Street', 'Los Angeles'),
+    ('Bob Johnson', '789 Oak Street', 'Chicago');
+
+-- Insert sample data into works table
+INSERT INTO works (employee_name, company_name, salary)
+VALUES 
+    ('John Doe', 'Company A', 12000.00),
+    ('Jane Smith', 'Company B', 15000.00),
+    ('Bob Johnson', 'Company A', 10000.00);
+
+-- Insert sample data into company table
+INSERT INTO company (company_name, city)
+VALUES 
+    ('Company A', 'New York'),
+    ('Company B', 'Los Angeles'),
+    ('Company C', 'Chicago');
+
+-- Insert sample data into manages table
+INSERT INTO manages (employee_name, manager_name)
+VALUES 
+    ('John Doe', 'Jane Smith'),
+    ('Jane Smith', 'Bob Johnson');
+```
+
+**Queries:**
+
+a) **Find the name of the company that has the smallest payroll:**
+
+```sql
+SELECT w.company_name
+FROM works w
+GROUP BY w.company_name
+HAVING SUM(w.salary) = (
+    SELECT MIN(total_salary)
+    FROM (
+        SELECT SUM(salary) as total_salary
+        FROM works
+        GROUP BY company_name
+    ) as min_salaries
+);
+```
+
+b) **Find the names of all employees who live in the same cities and on the same streets as do their managers:**
+
+```sql
+SELECT e.employee_name
+FROM employee e
+JOIN manages m ON e.employee_name = m.employee_name
+JOIN employee manager ON m.manager_name = manager.employee_name
+WHERE e.street = manager.street AND e.city = manager.city;
+```
+
+These SQL statements should work with the provided schema and sample data.

@@ -1,0 +1,49 @@
+7) Write a SQL statement to create a table job_history including columns employee_id, start_date, end_date, job_id and department_id and make sure that, the employee_id column does not contain any duplicate value at the time of insertion and the foreign key column job_id contain only those values which are exists in the jobs table. Consider table Job (job_id,job_title.min_sal,max_sal)
+
+
+Certainly! Here is the SQL statement to create the `job_history` table with the specified constraints:
+
+CREATE TABLE jobs (
+    job_id VARCHAR(10) PRIMARY KEY,
+    job_title VARCHAR(50),
+    min_sal DECIMAL(10, 2),
+    max_sal DECIMAL(10, 2)
+);
+
+-- Insert sample data into the jobs table
+INSERT INTO jobs (job_id, job_title, min_sal, max_sal) VALUES
+    ('JOB001', 'Software Developer', 50000.00, 90000.00),
+    ('JOB002', 'Database Administrator', 55000.00, 95000.00),
+    ('JOB003', 'Business Analyst', 60000.00, 100000.00),
+    ('JOB004', 'Project Manager', 70000.00, 120000.00),
+    ('JOB005', 'Network Engineer', 55000.00, 95000.00);
+    
+CREATE TABLE job_history (
+    employee_id INT,
+    start_date DATE,
+    end_date DATE,
+    job_id VARCHAR(10),
+    department_id INT,
+    PRIMARY KEY (employee_id, start_date),
+    FOREIGN KEY (job_id) REFERENCES jobs (job_id)
+);
+
+Explanation:
+
+- `employee_id INT`: This column stores the unique identifier for each employee.
+
+- `start_date DATE`: This column stores the start date of the job history record.
+
+- `end_date DATE`: This column stores the end date of the job history record.
+
+- `job_id VARCHAR(10)`: This column stores the job ID, referencing the `job_id` in the `jobs` table.
+
+- `department_id INT`: This column stores the department ID.
+
+- `PRIMARY KEY (employee_id, start_date)`: This makes sure that the combination of `employee_id` and `start_date` is unique.
+
+- `FOREIGN KEY (employee_id) REFERENCES employees(employee_id)`: This establishes a foreign key relationship with the `employees` table, ensuring that `employee_id` in `job_history` refers to a valid `employee_id` in the `employees` table.
+
+- `FOREIGN KEY (job_id) REFERENCES jobs(job_id)`: This ensures that `job_id` in `job_history` refers to a valid `job_id` in the `jobs` table.
+
+Make sure you have the `employees` and `jobs` tables created with their respective columns (`employee_id`, `job_id`, etc.) before creating the `job_history` table, as there are foreign key references to these tables.

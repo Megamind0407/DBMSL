@@ -1,0 +1,38 @@
+ 6. Consider student (roll_no, name, marks, class) table. Column roll_no is primary key. Perform any 3 DLL and any 3 DML operations on the table.
+
+
+
+
+-- DDL Operations
+-- 1. Create the student table
+CREATE TABLE student (
+    roll_no INTEGER PRIMARY KEY,
+    name TEXT,
+    marks INTEGER,
+    class TEXT
+);
+
+-- 2. Add a new column to the table
+ALTER TABLE student
+ADD COLUMN gender TEXT;
+
+-- 3. Delete the "gender" column from the table
+ALTER TABLE student
+DROP COLUMN gender;
+
+-- DML Operations
+-- 1. Insert records into the student table
+INSERT INTO student (roll_no, name, marks, class) VALUES
+    (1, 'Alice', 95, 'A'),
+    (2, 'Bob', 88, 'B'),
+    (3, 'Charlie', 75, 'C'),
+    (4, 'David', 92, 'A');
+
+-- 2. Update a student's marks
+UPDATE student
+SET marks = 85
+WHERE roll_no = 2;
+
+-- 3. Delete a student's record
+DELETE FROM student
+WHERE roll_no= 1;

@@ -1,0 +1,119 @@
+8) For the given relation schema: employee(employee-name, street, city) 
+works (employee-name, company-name, salary) 
+company (company-name, city) 
+manages (employee-name, manager-name)
+ Give an expression in SQL for each of the following queries: 
+a) Find the names, street address, and cities of residence for all employees who work for same company and earn more than $10,000.
+b) Find the names of all employees in the database who live in the same cities as the companies for which they work.
+c) Find the names of all employees who earn more than the average salary of all employees of their company. Assume that all people work for at most one company.
+
+
+
+
+
+1. **Creating Tables and Inserting Sample Data:**
+
+```sql
+-- Create employee table
+CREATE TABLE employee (
+    employee_name VARCHAR(50),
+    street VARCHAR(100),
+    city VARCHAR(50)
+);
+
+-- Create works table
+CREATE TABLE works (
+    employee_name VARCHAR(50),
+    company_name VARCHAR(50),
+    salary DECIMAL(10, 2)
+);
+
+-- Create company table
+CREATE TABLE company (
+    company_name VARCHAR(50),
+    city VARCHAR(50)
+);
+
+-- Create manages table
+CREATE TABLE manages (
+    employee_name VARCHAR(50),
+    manager_name VARCHAR(50)
+);
+
+
+
+
+-- Insert sample data into employee table
+INSERT INTO employee (employee_name, street, city)
+VALUES 
+    ('John Doe', '123 Main Street', 'New York'),
+    ('Jane Smith', '456 Elm Street', 'Los Angeles'),
+    ('Bob Johnson', '789 Oak Street', 'Chicago');
+
+-- Insert sample data into works table
+INSERT INTO works (employee_name, company_name, salary)
+VALUES 
+    ('John Doe', 'Company A', 12000.00),
+    ('Jane Smith', 'Company B', 15000.00),
+    ('Bob Johnson', 'Company A', 10000.00);
+
+-- Insert sample data into company table
+INSERT INTO company (company_name, city)
+VALUES 
+    ('Company A', 'New York'),
+    ('Company B', 'Los Angeles'),
+    ('Company C', 'Chicago');
+
+-- Insert sample data into manages table
+INSERT INTO manages (employee_name, manager_name)
+VALUES 
+    ('John Doe', 'Jane Smith'),
+    ('Jane Smith', 'Bob Johnson');
+
+
+
+
+
+
+
+Now that we have the tables and some sample data, let's proceed with the SQL expressions for the queries:
+
+a) **Find the names, street address, and cities of residence for all employees who work for the same company and earn more than $10,000:**
+
+```sql
+SELECT e.employee_name, e.street, e.city
+FROM employee e
+JOIN works w ON e.employee_name = w.employee_name
+WHERE w.salary > 10000
+AND w.company_name IN (
+    SELECT DISTINCT w1.company_name
+    FROM works w1
+    JOIN works w2 ON w1.company_name = w2.company_name
+    WHERE w1.employee_name <> w2.employee_name
+);
+```
+
+b) **Find the names of all employees in the database who live in the same cities as the companies for which they work:**
+
+```sql
+SELECT DISTINCT e.employee_name
+FROM employee e
+JOIN works w ON e.employee_name = w.employee_name
+JOIN company c ON w.company_name = c.company_name
+WHERE e.city = c.city;
+```
+
+c) **Find the names of all employees who earn more than the average salary of all employees of their company. Assume that all people work for at most one company:**
+
+```sql
+SELECT e.employee_name
+FROM employee e
+JOIN works w ON e.employee_name = w.employee_name
+WHERE w.salary > (
+    SELECT AVG(w2.salary)
+    FROM works w2
+    WHERE w2.company_name = w.company_name
+);
+```
+
+These SQL expressions should work with the provided tables and sample data.

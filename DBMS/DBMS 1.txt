@@ -1,0 +1,89 @@
+1) Consider the relation employee (emp_id,e_name,salary ,Date of Joining,Dapt_no,Designation) perform basic SQL operations.
+1.	Create table employee.
+2.	Insert 10 records in table.
+3.	Create a view emp_vl of table employee which  has emp_id , name and dept-attributes.
+4.	Create view of table.
+5.	Update dept of any employee in view. Check whether it  gets updated or not.
+6.	Create emp_id as primary key and show indices on table employee.
+7.	Show indices on table.
+8.	Create user defined index on any column. 
+
+
+
+SQL Queries : 
+
+
+1. Create table `employee`:
+
+```sql
+CREATE TABLE employee (
+    emp_id INT,
+    e_name VARCHAR(50),
+    salary DECIMAL(10, 2),
+    Date_of_Joining DATE,
+    Dept_no INT,
+    Designation VARCHAR(50)
+);
+```
+
+2. Insert 10 records into the table:
+
+```sql
+INSERT INTO employee (emp_id, e_name, salary, Date_of_Joining, Dept_no, Designation)
+VALUES
+(1, 'John Doe', 50000.00, '2022-01-01', 1, 'Manager'),
+(2, 'Jane Smith', 45000.00, '2022-02-01', 2, 'Developer'),
+(3, 'Bob Johnson', 40000.00, '2022-03-01', 1, 'Analyst'),
+(4, 'Bob Johnson', 40000.00, '2022-03-01', 1, 'Analyst'),
+(5, 'Bob Johnson', 40000.00, '2022-03-01', 1, 'Analyst'),
+(6, 'Bob Johnson', 40000.00, '2022-03-01', 1, 'Analyst'),
+(7, 'Bob Johnson', 40000.00, '2022-03-01', 1, 'Analyst'),
+(8, 'Bob Johnson', 40000.00, '2022-03-01', 1, 'Analyst'),
+(9, 'Bob Johnson', 40000.00, '2022-03-01', 1, 'Analyst'),
+(10, 'Bob Johnson', 40000.00, '2022-03-01', 1, 'Analyst'),
+
+-- Add more records as needed
+;
+```
+
+3. Create a view `emp_vl` with `emp_id`, `e_name`, and `Dept_no` attributes:
+
+```sql
+CREATE VIEW emp_vl AS
+SELECT emp_id, e_name, Dept_no
+FROM employee;
+```
+
+4. To create a view of a table, you've already done it in step 3.
+
+5. Update the department of an employee in the view and check if it gets updated:
+
+```sql
+UPDATE emp_vl
+SET Dept_no = 3
+WHERE emp_id = 1;
+```
+
+This will update the department of the employee with `emp_id` 1 in the `emp_vl` view.
+
+6. Create `emp_id` as the primary key and show indices:
+
+```sql
+ALTER TABLE employee
+ADD CONSTRAINT pk_employee PRIMARY KEY (emp_id);
+
+-- To show indices, it depends on the specific database system you're using. For example, in MySQL, you can use:
+
+SHOW INDEX FROM employee;
+```
+
+7. Showing indices on a table depends on the specific database system you're using. The command might be different for MySQL, PostgreSQL, SQLite, etc. Please let me know which database system you're using for more specific instructions.
+
+8. Create a user-defined index on any column. Here's an example for MySQL:
+
+```sql
+CREATE INDEX idx_salary ON employee (salary);
+```
+
+This will create an index named `idx_salary` on the `salary` column of the `employee` table.
+

@@ -1,0 +1,100 @@
+5) Consider tables Borrower (RollNo, Name, DateofIssue, NameofBook, Status) and 
+Fine (Roll_no,Date,Amt). Status is either Issued or Returned.
+1. Create both the tables with primary key.
+2. Insert 10 records each.
+3. Find count of books with Issued status.
+4. Display all records.
+5. Display RollNo whose date of issue is same.
+
+
+
+
+SQL Queries : 
+
+
+
+1. Create both tables with primary keys:
+
+```sql
+-- Borrower table
+CREATE TABLE Borrower (
+    RollNo INT PRIMARY KEY,
+    Name VARCHAR(50),
+    DateofIssue DATE,
+    NameofBook VARCHAR(50),
+    Status VARCHAR(10)
+);
+
+-- Fine table
+CREATE TABLE Fine (
+    Roll_no INT,
+    Date DATE,
+    Amt DECIMAL(10, 2),
+    PRIMARY KEY (Roll_no, Date),
+    FOREIGN KEY (Roll_no) REFERENCES Borrower(RollNo)
+);
+```
+
+This creates two tables: `Borrower` and `Fine`, with their respective primary keys.
+
+2. Insert 10 records each (sample data, you can replace with actual data):
+
+For Borrower table:
+
+```sql
+INSERT INTO Borrower (RollNo, Name, DateofIssue, NameofBook, Status)
+VALUES
+    (1, 'John Doe', '2022-01-05', 'Book A', 'Issued'),
+    (2, 'Jane Smith', '2022-01-10', 'Book B', 'Issued'),
+	(3, 'sanket', '2022-01-10', 'Book c', 'Issued');
+    -- Add more records as needed
+;
+```
+
+For Fine table:
+
+```sql
+INSERT INTO Fine (Roll_no, Date, Amt)
+VALUES
+    (1, '2022-01-15', 10.00),
+    (2, '2022-01-12', 8.00),
+    -- Add more records as needed
+;
+```
+
+3. Find the count of books with Issued status:
+
+```sql
+SELECT COUNT(*) 
+FROM Borrower
+WHERE Status = 'Issued';
+```
+
+4. Display all records:
+
+For Borrower table:
+
+```sql
+SELECT * FROM Borrower;
+```
+
+For Fine table:
+
+```sql
+SELECT * FROM Fine;
+```
+
+5. Display RollNo whose date of issue is the same:
+
+```sql
+SELECT b1.RollNo
+FROM Borrower b1
+INNER JOIN (
+    SELECT DateofIssue
+    FROM Borrower
+    GROUP BY DateofIssue
+    HAVING COUNT(*) > 1
+) b2 ON b1.DateofIssue = b2.DateofIssue;
+```
+
+Please note that these queries assume that you have the necessary permissions to create tables and insert data. Additionally, replace the sample data with actual data as per your requirements.

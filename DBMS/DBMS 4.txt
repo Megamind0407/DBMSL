@@ -1,0 +1,103 @@
+4)Consider  two tables Customer(c_id, c_name , email , city , pincode)Order(order_id , date , amount , cust_id.
+1.	Create both the tables with primary key and foreign key constraints. 
+2.	insert 10 records each.
+3.	Find all orders placed by customers with cust_id 2
+4.	Find list of customers who placed their order and details of order
+5.	List of customers who haven’t placed order
+6.	List all orders and append to customer table
+7.	Display all records
+8.	Display customer that are from same city8
+
+
+
+Sure, here are the updated queries with the renamed "CustomerOrder" table:
+
+1. Create both the tables with primary key and foreign key constraints:
+
+```sql
+CREATE TABLE Customer (
+    c_id INT PRIMARY KEY,
+    c_name VARCHAR(255),
+    email VARCHAR(255),
+    city VARCHAR(255),
+    pincode INT
+);
+
+CREATE TABLE CustomerOrder (
+    order_id INT PRIMARY KEY,
+    date DATE,
+    amount DECIMAL(10, 2),
+    cust_id INT,
+    FOREIGN KEY (cust_id) REFERENCES Customer(c_id)
+);
+```
+
+2. Insert 10 records each (You can replace the values with your own data):
+
+```sql
+-- Insert 10 customers
+INSERT INTO Customer (c_id, c_name, email, city, pincode)
+VALUES
+    (1, 'Customer 1', 'customer1@email.com', 'City A', 12345),
+    (2, 'Customer 2', 'customer2@email.com', 'City B', 54321),
+    -- Add 8 more customers...
+
+-- Insert 10 orders
+INSERT INTO CustomerOrder (order_id, date, amount, cust_id)
+VALUES
+    (1, '2023-01-01', 100.00, 1),
+    (2, '2023-01-02', 200.00, 2),
+    -- Add 8 more orders...
+```
+
+3. Find all orders placed by customers with cust_id 2:
+
+```sql
+SELECT * FROM CustomerOrder WHERE cust_id = 2;
+```
+
+4. Find the list of customers who placed their order and details of the order:
+
+```sql
+SELECT c.*, o.order_id, o.date, o.amount
+FROM Customer c
+INNER JOIN CustomerOrder o ON c.c_id = o.cust_id;
+```
+
+5. List of customers who haven't placed an order:
+
+```sql
+SELECT c.*
+FROM Customer c
+LEFT JOIN CustomerOrder o ON c.c_id = o.cust_id
+WHERE o.cust_id IS NULL;
+```
+
+6. List all orders and append to the customer table:
+
+```sql
+SELECT c.*, o.order_id, o.date, o.amount
+FROM Customer c
+LEFT JOIN CustomerOrder o ON c.cust_id = c.c_id;
+```
+
+7. Display all records from both tables:
+
+```sql
+-- All records from the Customer table
+SELECT * FROM Customer;
+
+-- All records from the CustomerOrder table
+SELECT * FROM CustomerOrder;
+```
+
+8. Display customers that are from the same city:
+
+To display customers from the same city, you can use a self-join on the Customer table. For example, to find customers from the same city as Customer 2:
+
+```sql
+SELECT c1.*
+FROM Customer c1
+JOIN Customer c2 ON c1.city = c2.city
+WHERE c2.c_id = 2; -- Assuming you want customers from the same city as Customer 2 (change the ID as needed).
+```

@@ -1,0 +1,116 @@
+3)Consider the relation employee(emp_id,e_name,salary ,Date of Joining,Dapt_no,Designation) perform basic SQL operations.
+1.	Find department in which maximum employees work.
+2.	 Display name, designation and department no of employees whose name starts with either ‘A’ or ‘P’.
+3.	 Display max. salary from department 2 and min. salary from department 4.
+4.	 Display employee data where salary is less than average salary from department 3.
+5.	 Display employees who were hired earliest or latest.
+6.	Display name and department no of employees who are manager, market analysts. Use prediactes
+7.	List employees hired in August.
+8.	 List employees who are hired after 31/12/2006.
+9.	 Find average annual salary per department
+
+To perform these SQL operations with example values inserted, you can use the following SQL queries with sample data:
+
+Let's assume a simplified "employee" table with the following columns and example data:
+
+```sql
+CREATE TABLE employee (
+    emp_id INT,
+    e_name VARCHAR(255),
+    salary DECIMAL(10, 2),
+    Date_of_Joining DATE,
+    Dapt_no INT,
+    Designation VARCHAR(255)
+);
+
+-- Insert sample data
+INSERT INTO employee (emp_id, e_name, salary, Date_of_Joining, Dapt_no, Designation)
+VALUES
+    (1, 'Alice', 55000.00, '2023-01-15', 1, 'Manager'),
+    (2, 'Bob', 60000.00, '2023-02-10', 2, 'Developer'),
+    (3, 'Charlie', 52000.00, '2023-03-20', 1, 'Analyst'),
+    (4, 'David', 59000.00, '2023-04-05', 3, 'Market Analyst'),
+    (5, 'Eve', 54000.00, '2023-05-12', 2, 'Developer'),
+    (6, 'Frank', 58000.00, '2023-06-30', 3, 'Manager'),
+    (7, 'Grace', 53000.00, '2023-07-14', 4, 'Analyst'),
+    (8, 'Hannah', 61000.00, '2023-08-18', 4, 'Manager');
+```
+
+Now, you can perform the SQL operations:
+
+1. Find the department in which the maximum employees work:
+
+```sql
+SELECT Dapt_no, COUNT(emp_id) AS employee_count
+FROM employee
+GROUP BY Dapt_no
+ORDER BY employee_count DESC
+LIMIT 1;
+```
+
+2. Display the name, designation, and department no of employees whose name starts with either 'A' or 'P':
+
+```sql
+SELECT e_name, Designation, Dapt_no
+FROM employee
+WHERE e_name LIKE 'A%' OR e_name LIKE 'P%';
+```
+
+3. Display the maximum salary from department 2 and the minimum salary from department 4:
+
+```sql
+SELECT MAX(salary) AS max_salary_dept_2, MIN(salary) AS min_salary_dept_4
+FROM employee
+WHERE Dapt_no = 2 OR Dapt_no = 4;
+```
+
+4. Display employee data where the salary is less than the average salary from department 3:
+
+```sql
+SELECT *
+FROM employee
+WHERE salary < (SELECT AVG(salary) FROM employee WHERE Dapt_no = 3);
+```
+
+5. Display employees who were hired earliest or latest:
+
+```sql
+SELECT *
+FROM employee
+WHERE Date_of_Joining = (SELECT MIN(Date_of_Joining) FROM employee) OR
+      Date_of_Joining = (SELECT MAX(Date_of_Joining) FROM employee);
+```
+
+6. Display the name and department no of employees who are managers or market analysts:
+
+```sql
+SELECT e_name, Dapt_no
+FROM employee
+WHERE Designation IN ('Manager', 'Market Analyst');
+```
+
+7. List employees hired in August:
+
+```sql
+SELECT *
+FROM employee
+WHERE MONTH(Date_of_Joining) = 8;
+```
+
+8. List employees who were hired after 31/12/2006:
+
+```sql
+SELECT *
+FROM employee
+WHERE Date_of_Joining > '2006-12-31';
+```
+
+9. Find the average annual salary per department:
+
+```sql
+SELECT Dapt_no, AVG(salary) AS average_salary
+FROM employee
+GROUP BY Dapt_no;
+```
+
+These queries should work with the sample data provided. You can adjust the sample data and table structure to match your specific scenario.

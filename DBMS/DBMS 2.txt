@@ -1,0 +1,101 @@
+2)Consider the relation employee (emp_id,e_name,salary ,Date of Joining,Dapt_no,Designation) perform basic SQL operations.
+1.	Display employees whose name contains letter ‘e’.
+2.	Display different types of designation
+3.	Display name and salary of employee whose location is Mumbai
+4.	Display name and department of employee working in Manager or Marketing department
+5.	Display the department name whose employees are more than one
+6.	Rename employee table as emp1
+7.	Add a new column city in the employee table.
+
+SQL Queries : 
+
+
+
+To perform the requested operations, let's start by creating the `employee` table and then proceed with the queries:
+
+1. Create the `employee` table:
+
+```sql
+CREATE TABLE employee (
+    emp_id INT PRIMARY KEY,
+    e_name VARCHAR(50),
+    salary DECIMAL(10, 2),
+    Date_of_Joining DATE,
+    Dept_no INT,
+    Designation VARCHAR(50)
+);
+```
+
+2. Insert some sample data (you can replace this with actual data):
+
+```sql
+INSERT INTO employee (emp_id, e_name, salary, Date_of_Joining, Dept_no, Designation)
+VALUES
+    (1, 'John Doe', 50000.00, '2022-01-01', 1, 'Manager'),
+    (2, 'Jane Smith', 45000.00, '2022-02-01', 2, 'Developer'),
+    (3, 'Bob Johnson', 40000.00, '2022-03-01', 1, 'Analyst'),
+    (4, 'Emily Brown', 55000.00, '2022-04-01', 3, 'Manager'),
+    (5, 'Michael Davis', 60000.00, '2022-05-01', 3, 'Analyst'),
+    (6, 'Sarah Wilson', 48000.00, '2022-06-01', 2, 'Developer'),
+    (7, 'Daniel Lee', 52000.00, '2022-07-01', 1, 'Marketing'),
+    (8, 'Emma Clark', 42000.00, '2022-08-01', 2, 'Analyst'),
+    (9, 'Olivia Taylor', 47000.00, '2022-09-01', 1, 'Developer'),
+    (10, 'Liam Williams', 51000.00, '2022-10-01', 2, 'Manager');
+```
+
+Now, let's proceed with the operations:
+
+3. Display employees whose name contains the letter 'e':
+
+```sql
+SELECT *
+FROM employee
+WHERE e_name LIKE '%e%';
+```
+
+4. Display different types of designations:
+
+```sql
+SELECT DISTINCT Designation
+FROM employee;
+```
+
+5. Display the name and salary of employees whose location is Mumbai (assuming 'location' is a column in the table):
+
+```sql
+-- Assuming there is a 'location' column, update this query with the actual column name.
+SELECT e_name, salary
+FROM employee
+WHERE designation = 'Manager';
+```
+
+6. Display the name and department of employees working in the Manager or Marketing department:
+
+```sql
+SELECT e_name, Designation
+FROM employee
+WHERE Designation IN ('Manager', 'Marketing');
+```
+
+7. Display the department name with more than one employee:
+
+```sql
+SELECT designation
+FROM employee
+GROUP BY designation
+HAVING COUNT(*) > 1;
+```
+
+8. Rename the `employee` table as `emp1`:
+
+```sql
+ALTER TABLE employee RENAME TO emp1;
+```
+
+9. Add a new column `city` in the `employee` table:
+
+```sql
+ALTER TABLE emp1
+ADD COLUMN city VARCHAR(50);
+```
+
