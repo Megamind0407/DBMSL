@@ -1,0 +1,23 @@
+13) Implement Map reduces operation for counting the marks of students.
+ Use: student (roll_no, name marks, class)
+Expected output: student name or roll no and total marks.
+
+
+
+
+db.createCollection('students');
+db.student.insertMany([
+ { roll_no: 1, name: "Alice", marks: [85, 90, 78], class: "10th" },
+ { roll_no: 2, name: "Bob", marks: [75, 80, 92], class: "10th" },
+ { roll_no: 3, name: "Charlie", marks: [90, 88, 86], class: "10th" },
+ { roll_no: 4, name: "David", marks: [92, 95, 89], class: "10th" },
+ { roll_no: 5, name: "Eve", marks: [78, 85, 88], class: "10th" }
+]);
+var mapFunction=function(){
+emit(this.name,Array.sum(this.marks));
+};
+var reduceFunction=function(key,values){
+return Array.sum(values);
+};
+db.student.mapReduce(mapFunction,reduceFunction,{out:"total_marks"});
+db.total_marks.find();
