@@ -1,0 +1,70 @@
+16) Perform CRUD operation and Aggregation in mongo db
+employee(emp_id,e_name,salary ,Date of Joining,Dapt_no,Designation)
+1. Display the count of employee department wise.
+2. Dsiplay the average salary of employee in sales department.
+3. Dsiplay minimum salary to employees joins in June 2016
+4. Display maximum salary given to employee in production department.
+5. Display record of first and last employee department wise.
+db.createCollection("employee");
+db.employee.insertMany([
+ { emp_id: 1, e_name: "Alice", salary: 60000, Date_of_Joining: "2016-05-15", Dept_no: 101,
+Designation: "Manager" },
+ { emp_id: 2, e_name: "Bob", salary: 55000, Date_of_Joining: "2017-03-20", Dept_no: 102,
+Designation: "Sales Associate" },
+ { emp_id: 3, e_name: "Charlie", salary: 75000, Date_of_Joining: "2016-06-10", Dept_no: 101,
+Designation: "Engineer" },
+ { emp_id: 4, e_name: "David", salary: 80000, Date_of_Joining: "2018-01-10", Dept_no: 103,
+Designation: "Analyst" },
+ { emp_id: 5, e_name: "Eve", salary: 90000, Date_of_Joining: "2016-06-01", Dept_no: 102,
+Designation: "Sales Manager" }
+]);
+
+1. Display the count of employee department wise.
+db.employee.aggregate([
+ {
+ $group: {
+ _id: "$Dept_no",
+ count: { $sum: 1 }
+ }
+ }
+]);
+
+2. Dsiplay the average salary of employee in sales department.
+db.employee.aggregate([
+ {
+ $match: { Dept_no: 102 }
+ },
+ {
+ $group: {
+ _id: null,
+ averageSalary: { $avg: "$salary" }
+ }
+ }
+]);
+
+3. Dsiplay minimum salary to employees joins in June 2016
+db.employee.find({
+ Date_of_Joining: {
+ $gte: "2016-06-01",
+ $lt: "2016-07-01"
+ }
+}).sort({ salary: 1 }).limit(1);
+
+4. Display maximum salary given to employee in production department.
+db.employee.find({
+ Dept_no: 103
+}).sort({ salary: -1 }).limit(1);
+
+5. Display record of first and last employee department wise.
+db.employee.aggregate([
+ {
+ $sort: { Dept_no: 1, emp_id: 1 }
+ },
+ {
+ $group: {
+ _id: "$Dept_no",
+ firstEmployee: { $first: "$$ROOT" },
+ lastEmployee: { $last: "$$ROOT" }
+ }
+ }
+]);
