@@ -1,0 +1,47 @@
+15) Perform CRUD operation in mongo db –
+ Use : person( person_id, name, addr, profession )
+1.Create Collection.
+2.Inserting data in collection.
+3.Reading data of collection.
+4.Updating data of collection.
+5.Deleting data from collection.
+
+
+
+1.Create Collection.
+db.createCollection("person");
+
+2.Inserting data in collection.
+db.person.insertOne({
+ person_id: 1,
+ name: "Alice",
+ addr: "123 Main St",
+ profession: "Engineer"
+})
+db.person.insertMany([
+ {
+ person_id: 2,
+ name: "Bob",
+ addr: "456 Elm St",
+ profession: "Doctor"
+ },
+ {
+ person_id: 3,
+ name: "Charlie",
+ addr: "789 Oak St",
+ profession: "Engineer"
+ }
+]);
+
+3.Reading data of collection.
+db.person.find();
+db.person.findOne({ person_id: 1 });
+
+4.Updating data of collection.
+db.person.updateOne(
+ { person_id: 1 },
+ { $set: { profession: "Software Developer" } }
+);
+
+5.Deleting data from collection.
+db.person.deleteOne({ person_id: 2 });
