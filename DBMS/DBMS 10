@@ -1,0 +1,28 @@
+10) Implement CRUD operations. SAVE method. Use following Collection. Perform Map
+Reduce to count quantity of each item.
+Item: Item ID, Item quantity, price, brand, discount
+1. Display the count of item brand wise.
+2. Dsiplay item with minimum price.
+3. Display maximum discount given for item.
+
+
+
+db.createCollection("Item");
+db.Item.insertMany([
+{ ItemID: 1, ItemQuantity: 10, Price: 20, Brand: "Brand1", Discount: 5 },
+{ ItemID: 2, ItemQuantity: 5, Price: 15, Brand: "Brand2", Discount: 10 },
+{ ItemID: 3, ItemQuantity: 8, Price: 25, Brand: "Brand1", Discount: 7 },
+{ ItemID: 4, ItemQuantity: 12, Price: 30, Brand: "Brand2", Discount: 12 },
+{ ItemID: 5, ItemQuantity: 15, Price: 22, Brand: "Brand1", Discount: 8 }
+]);
+
+var mapfunction=function(){emit(this.Brand,this.ItemQuantity)};
+var reducefunction=function(key,values){return Array.sum(values)};
+db.Item.mapReduce( mapfunction,reducefunction,{out:"Brand_quantity"});
+db.Brand_quantity.find();
+1. Display the count of item brand wise.
+db.Item.aggregate([{$group:{_id:"$Brand",count:{$sum:1}}}]);
+2. Dsiplay item with minimum price.
+db.Item.find().sort({Price:1}).limit(1);
+3. Display maximum discount given for item.
+db.Item.find().sort({Discount:-1}).limit(1);
