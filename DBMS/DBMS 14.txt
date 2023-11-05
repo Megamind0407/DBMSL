@@ -1,0 +1,21 @@
+14) Implement Map reduces operation for displaying persons with same profession.
+ Use: person (person_id, name, addr, profession)
+
+
+
+db.createCollection("person")
+db.person.insertMany([{ person_id: 1, name: "Alice", addr: "123 Main St", profession:
+"Engineer" },
+ { person_id: 2, name: "Bob", addr: "456 Elm St", profession: "Doctor" },
+ { person_id: 3, name: "Charlie", addr: "789 Oak St", profession: "Engineer" },
+ { person_id: 4, name: "David", addr: "101 Pine St", profession: "Lawyer" },
+ { person_id: 5, name: "Eve", addr: "202 Maple St", profession: "Doctor" }
+]);
+var mapFunction = function () {
+ emit(this.profession, this.name);
+};
+var reduceFunction = function () {
+ emit(this.profession, this.name);
+};
+db.person.mapReduce(mapFunction,reduceFunction,{out:"person_by_profession"});
+db.person_by_profession.find();
